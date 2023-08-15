@@ -171,6 +171,8 @@ require('lazy').setup({
     'jamespeapen/Nvim-R'
   },
 
+  'norcalli/nvim-colorizer.lua',
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -281,6 +283,34 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+
+-- [[ Configure nvim-colorizer ]]
+require('colorizer').setup()
+
+
+-- [[ Configure Nvim-R ]]
+
+--  vim.g.rout_follow_colorscheme = 1
+
+if vim.fn.has('gui_running') or vim.o.termguicolors then
+  vim.g.rout_color_input    = 'guifg=#98c379'
+  vim.g.rout_color_normal   = 'guifg=#abb2bf'
+  vim.g.rout_color_number   = 'guifg=#abb2bf'
+  vim.g.rout_color_integer  = 'guifg=#abb2bf'
+  vim.g.rout_color_float    = 'guifg=#abb2bf'
+  vim.g.rout_color_complex  = 'guifg=#abb2bf'
+  vim.g.rout_color_negnum   = 'guifg=#abb2bf'
+  vim.g.rout_color_negfloat = 'guifg=#abb2bf'
+  vim.g.rout_color_date     = 'guifg=#abb2bf'
+  vim.g.rout_color_true     = 'guifg=#abb2bf'
+  vim.g.rout_color_false    = 'guifg=#abb2bf'
+  vim.g.rout_color_inf      = 'guifg=#56b6c2'
+  vim.g.rout_color_constant = 'guifg=#abb2bf'
+  vim.g.rout_color_string   = 'guifg=#abb2bf'
+  vim.g.rout_color_error    = 'guifg=#abb2bf guibg=#be5046'
+  vim.g.rout_color_warn     = 'guifg=#e06c75'
+  vim.g.rout_color_index    = 'guifg=#d0d080'
+end
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
