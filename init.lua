@@ -35,6 +35,9 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Tutorials and practice games
+  'ThePrimeagen/vim-be-good',
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -167,10 +170,12 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  {
-    'jamespeapen/Nvim-R'
-  },
+  -- work with R
+  'jamespeapen/Nvim-R',
+  'jalvesaq/cmp-nvim-r',
+  'onsails/lspkind.nvim',
 
+  -- colorize hexcodes
   'norcalli/nvim-colorizer.lua',
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -229,6 +234,10 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- relative numbers except for current line
+vim.wo.number = true
+vim.wo.relativenumber = true
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -240,7 +249,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Keymaps for terminal mode
-vim.keymap.set('t', '<leader><Esc>', '<c-\\><c-n>', { silent = true })
+vim.keymap.set('t', '<Esc>', '<c-\\><c-n>', { silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -293,7 +302,7 @@ require('colorizer').setup()
 
 -- [[ Configure Nvim-R ]]
 
---  vim.g.rout_follow_colorscheme = 1
+
 
 if vim.fn.has('gui_running') or vim.o.termguicolors then
   vim.g.rout_color_input    = 'guifg=#98c379'
@@ -484,6 +493,7 @@ mason_lspconfig.setup_handlers {
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
+local lspkind = require 'lspkind'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
@@ -526,7 +536,27 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'cmp_nvim_r' },
   },
+  formatting = {
+    fields = {'abbr', 'kind', 'menu'},
+    format = lspkind.cmp_format({
+              mode = 'symbol', -- show only symbol annotations
+              maxwidth = 50, -- prevent the popup from showing more than provided characters
+              ellipsis_char = '...', -- the truncated part when popup menu exceed maxwidth
+              before = function(entry, item)
+                  local menu_icon = {
+                      nvim_lsp = '',
+                      vsnip = '',
+                      path = '',
+                      cmp_zotcite = 'z',
+                      cmp_nvim_r = 'R'
+                  }
+                  item.menu = menu_icon[entry.source.name]
+                  return item
+              end,
+    })
+  }
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
