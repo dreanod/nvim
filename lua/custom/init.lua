@@ -9,3 +9,5 @@ vim.g.maplocalleader = ' '
 require('custom.packages')
 require('custom.options')
 require('custom.remap')
+require('custom.plugins')
+
