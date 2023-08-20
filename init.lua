@@ -1,4 +1,3 @@
-print('hello from init.lua')
 require('custom')
 
 -- [[ Configure nvim-colorizer ]]

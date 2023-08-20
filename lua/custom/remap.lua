@@ -1,5 +1,3 @@
-print('hello from remap')
-
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience

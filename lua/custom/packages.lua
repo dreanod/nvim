@@ -157,8 +157,8 @@ require('lazy').setup({
 
   -- work with R
   -- 'jamespeapen/Nvim-R',
-  'jalvesaq/cmp-nvim-r',
-  'onsails/lspkind.nvim',
+  -- 'jalvesaq/cmp-nvim-r',
+  -- 'onsails/lspkind.nvim',
 
   -- colorize hexcodes
   'norcalli/nvim-colorizer.lua',
