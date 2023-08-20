@@ -44,7 +44,7 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-    { name = 'cmp_nvim_r' },
+    -- { name = 'cmp_nvim_r' },
   },
   formatting = {
     fields = {'abbr', 'kind', 'menu'},
@@ -58,7 +58,7 @@ cmp.setup {
                       vsnip = '',
                       path = '',
                       cmp_zotcite = 'z',
-                      cmp_nvim_r = 'R'
+                      -- cmp_nvim_r = 'R'
                   }
                   item.menu = menu_icon[entry.source.name]
                   return item
