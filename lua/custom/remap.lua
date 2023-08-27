@@ -13,3 +13,12 @@ vim.keymap.set('t', '<Esc>', '<c-\\><c-n>', { silent = true })
 
 -- Remap for file explorer
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Open File Explorer (Ex)" })
+
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+vim.keymap.set("n", "<C-D>", "<C-D>zz")
+vim.keymap.set("n", "<C-U>", "<C-U>zz")
+
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
