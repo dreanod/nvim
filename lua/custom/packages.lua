@@ -32,35 +32,32 @@ require('lazy').setup({
   -- Tutorials and practice games
   'ThePrimeagen/vim-be-good',
 
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
+  -- CMP
+  'hrsh7th/nvim-cmp',     -- Required
+  'hrsh7th/cmp-nvim-lsp', -- Required
   {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
-    dependencies = {
-      -- LSP Support
-      {'neovim/nvim-lspconfig'},             -- Required
-      {'williamboman/mason.nvim'},           -- Optional
-      {'williamboman/mason-lspconfig.nvim'}, -- Optional
-      --
-      -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      -- { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      -- 'folke/neodev.nvim',
-
-      -- Autocompletion
-      {'hrsh7th/nvim-cmp'},     -- Required
-      {'hrsh7th/cmp-nvim-lsp'}, -- Required
-      {'L3MON4D3/LuaSnip'},     -- Required
-    }
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts) require'lsp_signature'.setup(opts) end
   },
+
+  -- LSP
+  'neovim/nvim-lspconfig',
+  { 'williamboman/mason.nvim', config = true },
+  'williamboman/mason-lspconfig.nvim',
+  'folke/neodev.nvim',
+
+  -- snippets
+  {'L3MON4D3/LuaSnip'},     -- Required
+  'saadparwaiz1/cmp_luasnip',
+  'rafamadriz/friendly-snippets',
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
+
+  -- Adds git related signs to the gutter, as well as utilities for managing changes
   {
-    -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
       -- See `:help gitsigns.txt`
@@ -158,7 +155,7 @@ require('lazy').setup({
   -- work with R
   -- 'jamespeapen/Nvim-R',
   -- 'jalvesaq/cmp-nvim-r',
-  -- 'onsails/lspkind.nvim',
+  'onsails/lspkind.nvim',
 
   -- colorize hexcodes
   'norcalli/nvim-colorizer.lua',
