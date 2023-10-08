@@ -47,9 +47,10 @@ end
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
-local servers = {
-  r_language_server = {},
 
+local util = require 'lspconfig.util'
+
+local servers = {
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -81,11 +82,25 @@ mason_lspconfig.setup_handlers {
       filetypes = (servers[server_name] or {}).filetypes,
       handlers = {
         ["textDocument/publishDiagnostics"] = vim.lsp.with(
-            vim.lsp.diagnostic.on_publish_diagnostics,
-            { virtual_text = false, signs = true, update_in_insert = false, underline = true}
+          vim.lsp.diagnostic.on_publish_diagnostics,
+          { virtual_text = false, signs = true, update_in_insert = false, underline = true}
         ),
       }
     }
-  end
+  end,
+  ["r_language_server"] = function ()
+    require('lspconfig')['r_language_server'].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      handlers = {
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+          vim.lsp.diagnostic.on_publish_diagnostics,
+          { virtual_text = false, signs = true, update_in_insert = false, underline = true}
+        ),
+      },
+      root_dir = function(fname)
+        return util.find_git_ancestor(fname) or util.root_pattern('R')(fname) or vim.loop.os_homedir()
+      end
+    }
+  end,
 }
-

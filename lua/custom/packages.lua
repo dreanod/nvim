@@ -153,8 +153,8 @@ require('lazy').setup({
   'nvim-treesitter/playground',
 
   -- work with R
-  -- 'jamespeapen/Nvim-R',
-  -- 'jalvesaq/cmp-nvim-r',
+  'jamespeapen/Nvim-R',
+  'jalvesaq/cmp-nvim-r',
   'onsails/lspkind.nvim',
 
   -- colorize hexcodes
@@ -165,5 +165,7 @@ require('lazy').setup({
 
   -- Undo tree
   'mbbill/undotree',
+
+
 }, {})
 

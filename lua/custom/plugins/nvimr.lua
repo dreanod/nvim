@@ -20,3 +20,5 @@ if vim.fn.has('gui_running') or vim.o.termguicolors then
   vim.g.rout_color_index    = 'guifg=#d0d080'
 end
 
+-- key remaps
+vim.cmd('let R_assign = 0')

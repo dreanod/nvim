@@ -8,8 +8,9 @@ luasnip.config.setup {}
 
 cmp.setup({
   sources = {
-    {name = 'nvim_lsp'},
+    { name = 'nvim_lsp' },
     { name = 'luasnip' },
+    { name = 'cmp_nvim_r' },
   },
   mapping = {
     ['<C-y>'] = cmp.mapping.confirm({select = true}),
@@ -81,3 +82,7 @@ require "lsp_signature".setup({
   }
 })
 
+require'cmp_nvim_r'.setup({
+  filetypes = {'r', 'rmd', 'quarto'},
+  doc_width = 58
+  })
