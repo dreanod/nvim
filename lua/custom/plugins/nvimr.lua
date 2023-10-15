@@ -22,3 +22,6 @@ end
 
 -- key remaps
 vim.cmd('let R_assign = 0')
+
+-- custom key bindings
+vim.keymap.set("n", "<leader>la", ":RSend load_all()<Enter>")
