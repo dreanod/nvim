@@ -22,6 +22,20 @@ end
 
 -- key remaps
 vim.cmd('let R_assign = 0')
+vim.cmd('let R_rnowebchunk = 0')
+vim.cmd('let R_rmdchunk = 0')
 
 -- custom key bindings
-vim.keymap.set("n", "<leader>la", ":RSend load_all()<Enter>")
+vim.keymap.set("n", "<leader>oa", ":RSend load_all()<Enter>")
+vim.keymap.set("n", "<leader>ae", ":RSendFile")
+
+local r_send_uncomment = function ()
+  local lineNum = vim.api.nvim_win_get_cursor(0)[1]
+  local content = vim.fn.getline(lineNum)
+  content = string.gsub(content, "#' ", "")
+  vim.cmd(":call SendCmdToR('" .. content .. "')")
+  vim.cmd("norm! j")
+end
+vim.keymap.set("n", "<leader>L", function() r_send_uncomment() end)
+
+

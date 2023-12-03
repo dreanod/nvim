@@ -100,7 +100,7 @@ mason_lspconfig.setup_handlers {
       },
       root_dir = function(fname)
         return util.find_git_ancestor(fname) or util.root_pattern('R')(fname) or vim.loop.os_homedir()
-      end
+      end,
     }
   end,
 }
