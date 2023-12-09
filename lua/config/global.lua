@@ -34,9 +34,6 @@ vim.opt.breakindent = true
 -- consistent number column
 vim.opt.signcolumn = "yes:1"
 
--- how to show autocomplete menu
-vim.opt.completeopt = "menuone,noinsert"
-
 -- add folds with treesitter grammar
 vim.opt.foldmethod = "expr"
 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -82,3 +79,16 @@ vim.opt.scrolloff = 5
 
 -- (don't == 0) replace certain elements with prettier ones
 vim.opt.conceallevel = 0
+
+-- Set highlight on search
+vim.o.hlsearch = false
+
+-- Save undo history
+vim.o.undofile = true
+
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = 'menuone,noselect,preview,noinsert'
+
+-- relative numbers except for current line
+vim.wo.number = true
+vim.wo.relativenumber = true
