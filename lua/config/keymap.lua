@@ -244,6 +244,10 @@ wk.register({
 		name = "execute",
 		x = { ":w<cr>:source %<cr>", "file" },
 	},
+  T = {
+    name = "nvim-tree",
+    T = {":NvimTreeToggle<cr>", "toggle"}
+  }
 }, { mode = "n", prefix = "<leader>" })
 
 local is_code_chunk = function()
