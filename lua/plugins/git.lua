@@ -1,19 +1,8 @@
 return {
 	-- git and projects
 	{ "sindrets/diffview.nvim" },
-	{
-		"NeogitOrg/neogit",
-		lazy = true,
-		cmd = "Neogit",
-		config = function()
-			require("neogit").setup({
-				disable_commit_confirmation = true,
-				integrations = {
-					diffview = true,
-				},
-			})
-		end,
-	},
+  { "tpope/vim-fugitive" },
+  { "tpope/vim-rhubarb" },
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
