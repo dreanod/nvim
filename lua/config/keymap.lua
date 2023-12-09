@@ -70,14 +70,29 @@ vmap("<", "<gv")
 -- remove search highlight on esc
 nmap("<esc>", "<cmd>noh<cr>")
 
+-- move selected text up/down
+vmap("J", ":m '>+1<CR>gv=gv")
+vmap("K", ":m '<-2<CR>gv=gv")
+
+-- recenter screen after scrolling
+nmap("<C-D>", "<C-D>M")
+nmap("<C-U>", "<C-U>M")
+
 -- find files with telescope
 nmap("<c-p>", "<cmd>Telescope find_files<cr>")
 
--- paste and without overwriting register
-vmap("<leader>p", '"_dP')
+-- copy/cut/paste from system clipboard
+nmap("<leader>p", '"*p')
+nmap("<leader>P", '"*P')
+nmap("<leader>y", '"*y')
+nmap("<leader>c", '"*c')
+nmap("<leader>d", '"*d')
 
--- delete and without overwriting register
-vmap("<leader>d", '"_d')
+vmap("<leader>p", '"*p')
+vmap("<leader>P", '"*P')
+vmap("<leader>y", '"*y')
+vmap("<leader>c", '"*c')
+vmap("<leader>d", '"*d')
 
 -- center after search and jumps
 nmap("n", "nzz")
@@ -251,7 +266,7 @@ wk.register({
 }, { mode = "n", prefix = "<leader>" })
 
 local is_code_chunk = function()
-	local current, range = require("otter.keeper").get_current_language_context()
+	local current, _ = require("otter.keeper").get_current_language_context()
 	if current then
 		return true
 	else
