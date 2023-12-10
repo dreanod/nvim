@@ -30,6 +30,10 @@ return {
       lspFeatures = {
         languages = { "r", "python", "julia", "bash", "lua", "html" },
       },
+      codeRunner = {
+        enabled = true,
+        default_method = 'slime',
+      }
     },
   },
 
