@@ -26,6 +26,10 @@ return {
 						end
 					end,
 				},
+        workspaces = {
+          { "~/Projects", { ".git" } },
+          { "~", { ".git" } },
+        }
 			})
 
 			-- Bind <leader>fp to Telescope projections
