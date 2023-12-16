@@ -556,9 +556,6 @@ return {
             end
           end, { "i", "s" }),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({
-            select = true,
-          }),
           ["C-y"] = cmp.mapping.confirm({
             select = true,
           }),
