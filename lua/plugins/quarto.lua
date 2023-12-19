@@ -1,7 +1,6 @@
 return {
 
   {
-
     "quarto-dev/quarto-nvim",
     dev = false,
     dependencies = {
@@ -30,10 +29,6 @@ return {
       lspFeatures = {
         languages = { "r", "python", "julia", "bash", "lua", "html" },
       },
-      codeRunner = {
-        enabled = true,
-        default_method = 'slime',
-      }
     },
   },
 
@@ -273,11 +268,8 @@ return {
         flags = lsp_flags,
         settings = {
           yaml = {
-            schemas = {
-              -- add custom schemas here
-              -- e.g.
-              ["https://raw.githubusercontent.com/hits-mbm-dev/kimmdy/main/src/kimmdy/kimmdy-yaml-schema.json"] =
-              "kimmdy.yml",
+            schemaStore = {
+              enable = true,
             },
           },
         },
@@ -499,27 +491,27 @@ return {
 
       -- optional
       -- more things to try:
---      {
---        "zbirenbaum/copilot.lua",
---        config = function()
---          require("copilot").setup({
---            suggestion = {
---              enabled = true,
---              auto_trigger = true,
---              debounce = 75,
---              keymap = {
---                accept = "<c-a>",
---                accept_word = false,
---                accept_line = false,
---                next = "<M-]>",
---                prev = "<M-[>",
---                dismiss = "<C-]>",
---              },
---            },
---            panel = { enabled = false },
---          })
---        end,
---      },
+      -- {
+      --   "zbirenbaum/copilot.lua",
+      --   config = function()
+      --     require("copilot").setup({
+      --       suggestion = {
+      --         enabled = true,
+      --         auto_trigger = true,
+      --         debounce = 75,
+      --         keymap = {
+      --           accept = "<c-a>",
+      --           accept_word = false,
+      --           accept_line = false,
+      --           next = "<M-]>",
+      --           prev = "<M-[>",
+      --           dismiss = "<C-]>",
+      --         },
+      --       },
+      --       panel = { enabled = false },
+      --     })
+      --   end,
+      -- },
     },
     config = function()
       local cmp = require("cmp")
@@ -540,7 +532,7 @@ return {
           end,
         },
         mapping = {
-          ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(-4),
           ["<C-d>"] = cmp.mapping.scroll_docs(4),
           ["<C-n>"] = cmp.mapping(function(fallback)
             if luasnip.expand_or_jumpable() then
@@ -556,7 +548,7 @@ return {
             end
           end, { "i", "s" }),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["C-y"] = cmp.mapping.confirm({
+          ["<C-y>"] = cmp.mapping.confirm({
             select = true,
           }),
           ["<Tab>"] = cmp.mapping(function(fallback)
