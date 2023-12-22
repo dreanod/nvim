@@ -54,14 +54,12 @@ nmap("Q", "<Nop>")
 -- needs kitty (or other terminal) config:
 -- map shift+enter send_text all \x1b[13;2u
 -- map ctrl+enter send_text all \x1b[13;5u
-nmap("<c-cr>", "<Plug>SlimeSendCell")
-nmap("<s-cr>", "<Plug>SlimeSendCell")
-imap("<c-cr>", "<esc><Plug>SlimeSendCell<cr>i")
-imap("<s-cr>", "<esc><Plug>SlimeSendCell<cr>i")
+nmap("<c-cr>", ":call slime#send_cell()<cr>")
+imap("<c-cr>", "<esc>:call slime#send_cell()<cr>i")
 
 -- send code with Enter and leader Enter
 vmap("<cr>", "<Plug>SlimeRegionSend")
-nmap("<leader><cr>", "<Plug>SlimeSendCell")
+nmap("<leader><cr>", ":SlimeSend<cr>j")
 
 -- keep selection after indent/dedent
 vmap(">", ">gv")

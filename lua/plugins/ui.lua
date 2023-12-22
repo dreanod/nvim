@@ -181,8 +181,11 @@ return {
     version = "*",
     config = function()
       require("toggleterm").setup({
+        size = function()
+          return vim.o.columns / 5
+        end,
         open_mapping = [[<c-\>]],
-        direction = "float",
+        direction = "vertical",
       })
     end,
   },
