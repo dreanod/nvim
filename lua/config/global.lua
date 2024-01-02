@@ -1,6 +1,9 @@
 -- proper colors
 vim.opt.termguicolors = true
 
+-- project configuration in ./.nvim.lua
+vim.opt.exrc = true
+
 -- more opinionated
 vim.opt.number = true -- show linenumbers
 vim.opt.mouse = "a" -- enable mouse

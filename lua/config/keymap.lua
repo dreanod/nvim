@@ -49,17 +49,6 @@ imap(";", ";<c-g>u")
 
 nmap("Q", "<Nop>")
 
--- send code with ctrl+Enter
--- just like in e.g. RStudio
--- needs kitty (or other terminal) config:
--- map shift+enter send_text all \x1b[13;2u
--- map ctrl+enter send_text all \x1b[13;5u
-nmap("<c-cr>", ":call slime#send_cell()<cr>")
-imap("<c-cr>", "<esc>:call slime#send_cell()<cr>i")
-
--- send code with Enter and leader Enter
-vmap("<cr>", "<Plug>SlimeRegionSend")
-nmap("<leader><cr>", ":SlimeSend<cr>j")
 
 -- keep selection after indent/dedent
 vmap(">", ">gv")
