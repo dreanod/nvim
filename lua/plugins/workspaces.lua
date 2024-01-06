@@ -12,20 +12,6 @@ return {
 		config = function()
 			vim.opt.sessionoptions:append("localoptions") -- Save localoptions to session file
 			require("projections").setup({
-				store_hooks = {
-					pre = function()
-						-- nvim-tree
-						local nvim_tree_present, api = pcall(require, "nvim-tree.api")
-						if nvim_tree_present then
-							api.tree.close()
-						end
-
-						-- neo-tree
-						if pcall(require, "neo-tree") then
-							vim.cmd([[Neotree action=close]])
-						end
-					end,
-				},
         workspaces = {
           { "~/Projects", { ".git" } },
           { "~", { ".git" } },

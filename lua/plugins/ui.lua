@@ -115,7 +115,6 @@ return {
           lualine_y = { "progress" },
           lualine_z = { "location" },
         },
-        extensions = { "nvim-tree" },
       })
     end,
   },
@@ -127,40 +126,6 @@ return {
     end,
   },
 
-  -- {
-  --   'dstein64/nvim-scrollview',
-  --   config = function()
-  --     require('scrollview').setup({
-  --       current_only = true,
-  --     })
-  --   end
-  -- },
-
-  -- { 'RRethy/vim-illuminate' }, -- highlight current word
-
-  -- filetree
-  {
-    "nvim-tree/nvim-tree.lua",
-    keys = {
-      { "<c-b>", ":NvimTreeToggle<cr>", desc = "toggle nvim-tree" },
-    },
-    config = function()
-      require("nvim-tree").setup({
-        disable_netrw = true,
-        update_focused_file = {
-          enable = true,
-        },
-        git = {
-          enable = true,
-          ignore = false,
-          timeout = 500,
-        },
-        diagnostics = {
-          enable = true,
-        },
-      })
-    end,
-  },
   -- show keybinding help window
   { "folke/which-key.nvim" },
 
