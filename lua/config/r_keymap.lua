@@ -51,6 +51,30 @@ local send_r_line = function()
   vim.cmd("norm! j")
 end
 
+local get_selected_text = function()
+  local line_start = vim.fn.line("v")
+  local line_end = vim.fn.line(".")
+  local text = {""}
+  if (line_start ~= line_end) then
+    text = vim.fn.getline(line_start, line_end)
+  else
+    vim.cmd('normal "zy')
+    text = {vim.fn.getreg("z")}
+  end
+  return text
+end
+
+local send_r_region = function()
+  local text = get_selected_text()
+  tmux_sk(text, project, "1", "2")
+  vim.api.nvim_input("<esc>")
+end
+
+local get_r_help = function()
+  vim.cmd('normal "zyaw')
+  tmux_sk({ "?" .. vim.fn.getreg("z")}, project, "1", "2")
+end
+
 wk.register({
   r = {
     name = "R",
@@ -58,9 +82,16 @@ wk.register({
     r = { function() tmux_sk({"q()", "clear", "R --quiet"}, project, "1", "2") end, "restart R session" },
     t = { function() tmux_sk({"Rtest"}, project, "1", "1") end, "test R package"},
     c = { function() tmux_sk({"Rcheck"}, project, "1", "1") end, "check R package"},
-    s = { function() tmux_sk({'source(\'' .. vim.api.nvim_buf_get_name(0) .. '\', echo = TRUE, spaced = FALSE)'}, project, "1", "2") end, "source R file"}
+    s = { function() tmux_sk({'source(\'' .. vim.api.nvim_buf_get_name(0) .. '\', echo = TRUE, spaced = FALSE)'}, project, "1", "2") end, "source R file"},
+    ["?"] = { function() get_r_help() end, "print help"}
   },
   -- ["<cr>"] = { ":SlimeSend<cr>j", "Send current line to R" }
   ["<cr>"] = { function() send_r_line() end, "Send current line to R" }
 }, { mode = "n", prefix = "<leader>" })
 
+wk.register({
+  ["<cr>"] = { function() send_r_line() end, "Send currend line to R"},
+}, { mode = 'n'})
+wk.register({
+  ["<cr>"] = { function() send_r_region() end, "Send current region to R"}
+}, { mode = "v"})
