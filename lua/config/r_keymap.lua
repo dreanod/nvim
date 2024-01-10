@@ -64,6 +64,7 @@ local get_selected_text = function()
   return text
 end
 
+
 local send_r_region = function()
   local text = get_selected_text()
   tmux_sk(text, project, "1", "2")
@@ -71,9 +72,41 @@ local send_r_region = function()
 end
 
 local get_r_help = function()
-  vim.cmd('normal "zyaw')
+  vim.cmd('normal "zyiw')
   tmux_sk({ "?" .. vim.fn.getreg("z")}, project, "1", "2")
 end
+
+local get_text_object_line = function()
+  local line_start = vim.fn.line("'[")
+  local line_end = vim.fn.line("']")
+  local text = vim.fn.getline(line_start, line_end)
+  return text
+end
+
+local get_text_object_char = function()
+  vim.cmd('normal `["zyv`]')
+  return vim.fn.getreg("z")
+end
+
+function ExecuteR(motion)
+  if motion == nil then
+    vim.go.operatorfunc = "v:lua.ExecuteR"
+    return "g@"
+  end
+
+  if motion == "char" then
+    local cmd = get_text_object_char()
+    vim.print(cmd)
+    tmux_sk({cmd}, project, "1", "2")
+  end
+
+  if motion == "line" then
+    local cmd = get_text_object_line()
+    vim.print(cmd)
+    tmux_sk(cmd, project, "1", "2")
+  end
+end
+vim.keymap.set("n", "<leader><cr>", ExecuteR, { expr = true })
 
 wk.register({
   r = {
@@ -85,8 +118,6 @@ wk.register({
     s = { function() tmux_sk({'source(\'' .. vim.api.nvim_buf_get_name(0) .. '\', echo = TRUE, spaced = FALSE)'}, project, "1", "2") end, "source R file"},
     ["?"] = { function() get_r_help() end, "print help"}
   },
-  -- ["<cr>"] = { ":SlimeSend<cr>j", "Send current line to R" }
-  ["<cr>"] = { function() send_r_line() end, "Send current line to R" }
 }, { mode = "n", prefix = "<leader>" })
 
 wk.register({

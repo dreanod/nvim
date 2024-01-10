@@ -127,7 +127,9 @@ return {
   },
 
   -- show keybinding help window
-  { "folke/which-key.nvim" },
+  { 
+    "folke/which-key.nvim",
+  },
 
   {
     "simrat39/symbols-outline.nvim",
