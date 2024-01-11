@@ -106,7 +106,7 @@ function ExecuteR(motion)
     tmux_sk(cmd, project, "1", "2")
   end
 end
-vim.keymap.set("n", "<leader><cr>", ExecuteR, { expr = true })
+vim.keymap.set("n", "<s-cr>", ExecuteR, { expr = true }) -- The mapping does not work on all terminals
 
 wk.register({
   r = {
