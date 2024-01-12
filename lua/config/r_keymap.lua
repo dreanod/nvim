@@ -1,37 +1,4 @@
-local wk = require("which-key")
-
-local nmap = function(key, effect)
-	vim.keymap.set("n", key, effect, { silent = true, noremap = true })
-end
-
-local vmap = function(key, effect)
-	vim.keymap.set("v", key, effect, { silent = true, noremap = true })
-end
-
-local imap = function(key, effect)
-	vim.keymap.set("i", key, effect, { silent = true, noremap = true })
-end
-
 local project = string.gsub(vim.fn.system("basename $(pwd)"), "%s+", "")
-
-vim.g.slime_default_config = {
-  socket_name = "default",
-  target_pane = project .. ":1.2",
-}
-
-vim.g.slime_dont_ask_default = 1
-
--- send code with ctrl+Enter
--- just like in e.g. RStudio
--- needs kitty (or other terminal) config:
--- map shift+enter send_text all \x1b[13;2u
--- map ctrl+enter send_text all \x1b[13;5u
-nmap("<c-cr>", ":call slime#send_cell()<cr>")
-imap("<c-cr>", "<esc>:call slime#send_cell()<cr>i")
-
--- send code with Enter and leader Enter
-vmap("<cr>", "<Plug>SlimeRegionSend")
--- nmap("<leader><cr>", ":SlimeSend")
 
 local tmux_sk = function(cmds, session, window, pane) 
   local where = session .. ":" .. window .. "." .. pane
@@ -39,48 +6,29 @@ local tmux_sk = function(cmds, session, window, pane)
     cmd = string.gsub(cmd, '"', '\\"')
     cmd = string.gsub(cmd, "%$", [[\$]])
     local call = 'tmux send-keys -t ' .. where .. ' "' .. cmd .. '" ENTER'
-    -- vim.print(call)
     vim.fn.system(call)
   end
 end
 
-local send_r_line = function()
-  local cmd = vim.api.nvim_get_current_line()
-  vim.print(cmd)
-  tmux_sk({cmd}, project, "1", "2")
-  vim.cmd("norm! j")
+--------------------------------------------------------------------------------
+
+local send_to_console = function(cmds)
+  tmux_sk(cmds, project, "1", "2")
 end
 
-local get_selected_text = function()
-  local line_start = vim.fn.line("v")
-  local line_end = vim.fn.line(".")
-  local text = {""}
-  if (line_start ~= line_end) then
-    text = vim.fn.getline(line_start, line_end)
-  else
-    vim.cmd('normal "zy')
-    text = {vim.fn.getreg("z")}
-  end
-  return text
+local send_to_terminal = function(cmds)
+  tmux_sk(cmds, project, "1", "1")
 end
 
-
-local send_r_region = function()
-  local text = get_selected_text()
-  tmux_sk(text, project, "1", "2")
-  vim.api.nvim_input("<esc>")
-end
-
-local get_r_help = function()
-  vim.cmd('normal "zyiw')
-  tmux_sk({ "?" .. vim.fn.getreg("z")}, project, "1", "2")
-end
+--------------------------------------------------------------------------------
 
 local get_text_object_line = function()
   local line_start = vim.fn.line("'[")
   local line_end = vim.fn.line("']")
-  local text = vim.fn.getline(line_start, line_end)
-  return text
+  if (line_start ~= nil and line_end ~= nil) then
+    local text = vim.fn.getline(line_start, line_end)
+    return text
+  end
 end
 
 local get_text_object_char = function()
@@ -88,7 +36,41 @@ local get_text_object_char = function()
   return vim.fn.getreg("z")
 end
 
-function ExecuteR(motion)
+local get_selected_text = function()
+  local line_start = vim.fn.line("v")
+  local line_end = vim.fn.line(".")
+  if (line_start ~= nil and line_end ~= nil) then
+    local text = {""}
+    if (line_start ~= line_end) then
+      text = vim.fn.getline(line_start, line_end)
+    else
+      vim.cmd('normal "zy')
+      text = {vim.fn.getreg("z")}
+    end
+    return text
+  end
+end
+
+--------------------------------------------------------------------------------
+
+local send_r_line = function()
+  local cmd = vim.api.nvim_get_current_line()
+  send_to_console({ cmd })
+  vim.cmd("norm! j")
+end
+
+local send_r_region = function()
+  local text = get_selected_text()
+  send_to_console(text)
+  vim.api.nvim_input("<esc>")
+end
+
+local get_r_help = function()
+  vim.cmd('normal "zyiw')
+  send_to_console({ "?" .. vim.fn.getreg("z")})
+end
+
+function SendRTextObject(motion)
   if motion == nil then
     vim.go.operatorfunc = "v:lua.ExecuteR"
     return "g@"
@@ -96,33 +78,43 @@ function ExecuteR(motion)
 
   if motion == "char" then
     local cmd = get_text_object_char()
-    vim.print(cmd)
-    tmux_sk({cmd}, project, "1", "2")
+    send_to_console({ cmd })
   end
 
   if motion == "line" then
     local cmd = get_text_object_line()
-    vim.print(cmd)
-    tmux_sk(cmd, project, "1", "2")
+    send_to_console(cmd)
   end
 end
-vim.keymap.set("n", "<s-cr>", ExecuteR, { expr = true }) -- The mapping does not work on all terminals
 
-wk.register({
-  r = {
-    name = "R",
-    l = { function() tmux_sk({"devtools::load_all()"}, project, "1", "2") end, "reload R package" },
-    r = { function() tmux_sk({"q()", "clear", "R --quiet"}, project, "1", "2") end, "restart R session" },
-    t = { function() tmux_sk({"Rtest"}, project, "1", "1") end, "test R package"},
-    c = { function() tmux_sk({"Rcheck"}, project, "1", "1") end, "check R package"},
-    s = { function() tmux_sk({'source(\'' .. vim.api.nvim_buf_get_name(0) .. '\', echo = TRUE, spaced = FALSE)'}, project, "1", "2") end, "source R file"},
-    ["?"] = { function() get_r_help() end, "print help"}
-  },
-}, { mode = "n", prefix = "<leader>" })
+local source_r_file = function()
+  local cmd = 'source(\'' .. vim.api.nvim_buf_get_name(0) .. '\', echo = TRUE, spaced = FALSE)'
+  send_to_console({ cmd })
+end
 
-wk.register({
-  ["<cr>"] = { function() send_r_line() end, "Send currend line to R"},
-}, { mode = 'n'})
-wk.register({
-  ["<cr>"] = { function() send_r_region() end, "Send current region to R"}
-}, { mode = "v"})
+local reload_r_package = function()
+  send_to_console({ "devtools::load_all()" })
+end
+
+local restart_r = function()
+  send_to_console({"C-c", "q()", "clear", "R --quiet"})
+end
+
+local test_r_package = function()
+  send_to_terminal({ "Rtest" }) 
+end
+
+local check_r_package = function()
+  send_to_terminal({ "Rcheck" }) 
+end
+
+vim.keymap.set("n", "<s-cr>", SendRTextObject, { expr = true, desc = "Execute Text Object" })
+vim.keymap.set("n", "<cr>", send_r_line, { expr = true, desc = "Execute R line" })
+vim.keymap.set("v", "<cr>", send_r_region, { expr = true, desc = "Execute R Region"})
+vim.keymap.set("n", "<leader>rl", reload_r_package, { expr = true, desc = "Reload R package" })
+vim.keymap.set("n", "<leader>rr", restart_r, { expr = true, desc = "Restart R session" })
+vim.keymap.set("n", "<leader>rt", test_r_package, { expr = true, desc = "Test R Package" })
+vim.keymap.set("n", "<leader>re", check_r_package, { expr = true, desc = "Check R Package" })
+vim.keymap.set("n", "<leader>rs", source_r_file, { expr = true, desc = "Source R file"})
+vim.keymap.set("n", "<leader>r?", get_r_help, { expr = true, desc = "Get R Help"})
+
