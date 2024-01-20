@@ -126,11 +126,6 @@ return {
     end,
   },
 
-  -- show keybinding help window
-  { 
-    "folke/which-key.nvim",
-  },
-
   {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
@@ -163,15 +158,6 @@ return {
       require("trouble").setup({})
     end,
   },
-
-  -- {
-  --   "lukas-reineke/indent-blankline.nvim",
-  --   config = function()
-  --     require("ibl").setup({
-  --       indent = { char = "│" },
-  --     })
-  --   end,
-  -- },
 
   {
     "lukas-reineke/headlines.nvim",

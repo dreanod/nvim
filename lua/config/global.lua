@@ -84,7 +84,7 @@ vim.opt.scrolloff = 5
 vim.opt.conceallevel = 0
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Save undo history
 vim.o.undofile = true

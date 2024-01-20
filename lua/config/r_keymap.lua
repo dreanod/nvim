@@ -44,6 +44,7 @@ local get_selected_text = function()
     if (line_start ~= line_end) then
       text = vim.fn.getline(line_start, line_end)
     else
+      vim.print("blabla")
       vim.cmd('normal "zy')
       text = {vim.fn.getreg("z")}
     end
@@ -72,7 +73,7 @@ end
 
 function SendRTextObject(motion)
   if motion == nil then
-    vim.go.operatorfunc = "v:lua.ExecuteR"
+    vim.go.operatorfunc = "v:lua.SendRTextObject"
     return "g@"
   end
 
@@ -108,13 +109,13 @@ local check_r_package = function()
   send_to_terminal({ "Rcheck" }) 
 end
 
-vim.keymap.set("n", "<s-cr>", SendRTextObject, { expr = true, desc = "Execute Text Object" })
-vim.keymap.set("n", "<cr>", send_r_line, { expr = true, desc = "Execute R line" })
-vim.keymap.set("v", "<cr>", send_r_region, { expr = true, desc = "Execute R Region"})
-vim.keymap.set("n", "<leader>rl", reload_r_package, { expr = true, desc = "Reload R package" })
-vim.keymap.set("n", "<leader>rr", restart_r, { expr = true, desc = "Restart R session" })
-vim.keymap.set("n", "<leader>rt", test_r_package, { expr = true, desc = "Test R Package" })
-vim.keymap.set("n", "<leader>re", check_r_package, { expr = true, desc = "Check R Package" })
-vim.keymap.set("n", "<leader>rs", source_r_file, { expr = true, desc = "Source R file"})
-vim.keymap.set("n", "<leader>r?", get_r_help, { expr = true, desc = "Get R Help"})
+vim.keymap.set("n", "<cr>", SendRTextObject, { noremap = true, expr = false, desc = "Execute Text Object" })
+vim.keymap.set("n", "<cr><cr>", send_r_line, { noremap = true, expr = false, desc = "Execute R line" })
+vim.keymap.set("v", "<cr>", send_r_region, { noremap = true, expr = false, desc = "Execute R Region"})
+vim.keymap.set("n", "<bs>l", reload_r_package, { noremap = true, expr = false, desc = "Reload R package" })
+vim.keymap.set("n", "<bs>r", restart_r, { noremap = true, expr = false, desc = "Restart R session" })
+vim.keymap.set("n", "<bs>t", test_r_package, { noremap = true, expr = false, desc = "Test R Package" })
+vim.keymap.set("n", "<bs>e", check_r_package, { noremap = true, expr = false, desc = "Check R Package" })
+vim.keymap.set("n", "<bs>s", source_r_file, { noremap = true, expr = false, desc = "Source R file"})
+vim.keymap.set("n", "<bs>?", get_r_help, { noremap = true, expr = false, desc = "Get R Help"})
 
