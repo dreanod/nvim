@@ -10,7 +10,7 @@ vim.opt.mouse = "a" -- enable mouse
 vim.opt.mousefocus = true
 vim.opt.clipboard:append("unnamedplus") -- use system clipboard
 
-vim.opt.timeoutlen = 400
+vim.opt.timeoutlen = 1000
 vim.opt.updatetime = 250 -- for autocommands and hovers
 
 -- don't ask about existing swap files

@@ -43,49 +43,13 @@ return {
 		config = true, -- default settings
 	},
 	{
-		"danymat/neogen",
-		dependencies = "nvim-treesitter/nvim-treesitter",
-		config = true,
-	},
-	{
-		"chrishrb/gx.nvim",
-		event = { "BufEnter" },
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = true, -- default settings
-	},
-	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
-		opts = {
-			modes = {
-				search = {
-					enabled = false,
-				},
-			},
-		},
-		keys = {
-			{
-				"s",
-				mode = { "n", "x", "o" },
-				function()
-					require("flash").jump()
-				end,
-			},
-			{
-				"S",
-				mode = { "o", "x" },
-				function()
-					require("flash").treesitter()
-				end,
-			},
-		},
-	},
-
-	-- interactive global search and replace
-	{
-		"nvim-pack/nvim-spectre",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
+    "chrishrb/gx.nvim",
+    keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
+    cmd = { "Browse" },
+    init = function ()
+      vim.g.netrw_nogx = 1 -- disable netrw gx
+    end,
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = true, -- default settings
 	},
 }

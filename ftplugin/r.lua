@@ -1,5 +1,3 @@
-vim.b.slime_cell_delimiter = "#\\s\\=%%"
-
 vim.cmd(
   [[
   function! _EscapeText_r(text)
